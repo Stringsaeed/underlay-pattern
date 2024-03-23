@@ -1,20 +1,106 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useRef } from "react";
+import { StatusBar } from "expo-status-bar";
+import BottomSheet from "@gorhom/bottom-sheet";
+import { Dimensions, StyleSheet } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
+
+import MyBottomSheet from "./components/BottomSheet";
+import ArticleScroll from "./components/ArticleScroll";
+
+const { width } = Dimensions.get("window");
 
 export default function App() {
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const progress = useSharedValue(0);
+
+  const articleContainerStylez = useAnimatedStyle(() => {
+    return {
+      margin: interpolate(progress.value, [0, 1], [0, 20], Extrapolation.CLAMP),
+      marginTop: interpolate(
+        progress.value,
+        [0, 1],
+        [0, 60],
+        Extrapolation.CLAMP
+      ),
+      marginBottom: interpolate(
+        progress.value,
+        [0, 1],
+        [0, 364],
+        Extrapolation.CLAMP
+      ),
+      shadowOffset: {
+        width: 0,
+        height: interpolate(
+          progress.value,
+          [0, 1],
+          [0, 4],
+          Extrapolation.CLAMP
+        ),
+      },
+      shadowOpacity: interpolate(
+        progress.value,
+        [0, 1],
+        [0, 0.2],
+        Extrapolation.CLAMP
+      ),
+      shadowRadius: interpolate(
+        progress.value,
+        [0, 1],
+        [0, 5],
+        Extrapolation.CLAMP
+      ),
+      elevation: interpolate(
+        progress.value,
+        [0, 1],
+        [0, 10],
+        Extrapolation.CLAMP
+      ),
+      borderRadius: interpolate(
+        progress.value,
+        [0, 1],
+        [0, 20],
+        Extrapolation.CLAMP
+      ),
+    };
+  });
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+    <GestureHandlerRootView style={styles.container}>
+      <Animated.View
+        style={[styles.articleScrollContainer, articleContainerStylez]}
+      >
+        <ArticleScroll />
+      </Animated.View>
+      <MyBottomSheet ref={bottomSheetRef} progress={progress} />
       <StatusBar style="auto" />
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#f0f0f0",
+  },
+  articleScrollContainer: {
+    flex: 1,
+    backgroundColor: "#f0f0f0",
+    margin: 0,
+    marginTop: 0,
+    marginBottom: 0,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    elevation: 0,
+    borderRadius: 0,
   },
 });
