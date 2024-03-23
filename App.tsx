@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { Dimensions, StyleSheet } from "react-native";
+import { Button, Dimensions, LogBox, Platform, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, {
   Extrapolation,
@@ -13,7 +13,8 @@ import Animated, {
 import MyBottomSheet from "./components/BottomSheet";
 import ArticleScroll from "./components/ArticleScroll";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
+const sheetHeight = height * 0.4;
 
 export default function App() {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -31,7 +32,7 @@ export default function App() {
       marginBottom: interpolate(
         progress.value,
         [0, 1],
-        [0, 364],
+        [0, sheetHeight - 40],
         Extrapolation.CLAMP
       ),
       shadowOffset: {
@@ -94,13 +95,23 @@ const styles = StyleSheet.create({
     margin: 0,
     marginTop: 0,
     marginBottom: 0,
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    elevation: 0,
-    borderRadius: 0,
+    borderRadius: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
+        shadowOpacity: 0,
+        shadowRadius: 0,
+      },
+      android: {
+        elevation: 0,
+        overflow: "hidden",
+      },
+    }),
   },
 });
+
+LogBox.ignoreAllLogs(true);

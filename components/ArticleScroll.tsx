@@ -18,7 +18,7 @@ export default function ArticleScroll() {
       <View style={[styles.logoContainer, { paddingTop: 50 }]}>
         <Image
           style={styles.logo}
-          source={require("./assets/logo-wordmark.png")}
+          source={require("../assets/logo-wordmark.png")}
           resizeMode="contain"
         />
       </View>
@@ -102,6 +102,6 @@ const styles = StyleSheet.create({
   },
   article: {
     paddingTop: 24,
-    paddingHorizontal: 45,
+    paddingHorizontal: 16,
   },
 });

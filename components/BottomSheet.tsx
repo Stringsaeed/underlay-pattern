@@ -18,7 +18,7 @@ import BottomSheetContent from "./Content";
 type Props = {
   progress: SharedValue<number>;
 };
-const snapPoints = ["10%", 410];
+const snapPoints = ["10%", "40%"];
 
 function BottomSheetComponent({ progress }: Props, ref: Ref<BottomSheet>) {
   const innerRef = useRef<BottomSheet>(null);
@@ -33,6 +33,7 @@ function BottomSheetComponent({ progress }: Props, ref: Ref<BottomSheet>) {
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: progress.value,
+    flex: 1,
   }));
 
   return (
@@ -44,6 +45,7 @@ function BottomSheetComponent({ progress }: Props, ref: Ref<BottomSheet>) {
       snapPoints={snapPoints}
       enablePanDownToClose={false}
       backgroundStyle={styles.background}
+      enableOverDrag={false}
     >
       <Animated.View style={animatedStyle}>
         <BottomSheetContent />

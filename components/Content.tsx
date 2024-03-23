@@ -1,22 +1,25 @@
 import { Fragment } from "react";
-import { View, Pressable, Text, StyleSheet } from "react-native";
+import { View, Pressable, Text, StyleSheet, Platform } from "react-native";
 import {
   InfoIcon,
   XIcon,
   Wand,
   CalendarClock,
   MicOff,
+  Share,
+  Phone,
 } from "lucide-react-native";
+import { BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet";
 
 function ContentHeader() {
   return (
     <View style={styles.headerContainer}>
       <Pressable>
-        <InfoIcon />
+        <InfoIcon color="black" />
       </Pressable>
       <Text>Actions</Text>
       <Pressable>
-        <XIcon />
+        <XIcon color="black" />
       </Pressable>
     </View>
   );
@@ -26,27 +29,43 @@ function ContentMainActions() {
   return (
     <View style={styles.mainActionsContainer}>
       <View style={styles.cardContainer}>
-        <Wand />
+        <Wand color="black" />
         <Text>Reply with AI</Text>
       </View>
       <View style={styles.cardContainer}>
-        <CalendarClock />
+        <CalendarClock color="black" />
         <Text>Snooze</Text>
       </View>
     </View>
   );
 }
 
+function ListItem({ icon, text }: { icon: React.ReactNode; text: string }) {
+  return (
+    <View style={[styles.mainActionsContainer, styles.listItem]}>
+      {icon}
+      <Text>{text}</Text>
+    </View>
+  );
+}
+
 export default function BottomSheetContent() {
   return (
-    <Fragment>
+    <BottomSheetView style={{ flex: 1 }}>
       <ContentHeader />
-      <ContentMainActions />
-      <View style={styles.mainActionsContainer}>
-        <MicOff />
-        <Text>Mute</Text>
+      <View style={{ gap: 20, flex: 1 }}>
+        <ContentMainActions />
+        <BottomSheetScrollView
+          style={{ flex: 1 }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1, gap: 20, paddingBottom: 40 }}
+        >
+          <ListItem icon={<MicOff color="black" />} text="Mute" />
+          <ListItem icon={<Share color="black" />} text="Share" />
+          <ListItem icon={<Phone color="black" />} text="Call" />
+        </BottomSheetScrollView>
       </View>
-    </Fragment>
+    </BottomSheetView>
   );
 }
 
@@ -67,5 +86,34 @@ const styles = StyleSheet.create({
     gap: 12,
     aspectRatio: 2.5,
     flex: 1,
+    ...Platform.select({
+      ios: {
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  listItem: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    borderBottomColor: "#f0f0f0",
+    backgroundColor: "#fff",
+    ...Platform.select({
+      ios: {
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
 });
