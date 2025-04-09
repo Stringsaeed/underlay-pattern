@@ -1,10 +1,13 @@
 import { StyleSheet } from "react-native";
-import BottomSheet, { BottomSheetHandleProps } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetHandleProps,
+  BottomSheetModal,
+} from "@gorhom/bottom-sheet";
 import Animated, {
   SharedValue,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import {
+import React, {
   Ref,
   forwardRef,
   useCallback,
@@ -17,11 +20,16 @@ import BottomSheetContent from "./Content";
 
 type Props = {
   progress: SharedValue<number>;
+  children: React.ReactNode;
 };
-const snapPoints = ["10%", "40%"];
 
-function BottomSheetComponent({ progress }: Props, ref: Ref<BottomSheet>) {
-  const innerRef = useRef<BottomSheet>(null);
+const snapPoints = ["10%", "50%"];
+
+function BottomSheetComponent(
+  { progress, children }: Props,
+  ref: Ref<BottomSheet>
+) {
+  const innerRef = useRef<BottomSheetModal>(null);
   useImperativeHandle(ref, () => innerRef.current! as BottomSheet);
 
   const renderHandle = useCallback(
@@ -42,13 +50,16 @@ function BottomSheetComponent({ progress }: Props, ref: Ref<BottomSheet>) {
       animatedIndex={progress}
       style={styles.bottomSheet}
       handleComponent={renderHandle}
-      snapPoints={snapPoints}
       enablePanDownToClose={false}
       backgroundStyle={styles.background}
       enableOverDrag={false}
+      enableContentPanningGesture
+      // enableDynamicSizing
+      snapPoints={snapPoints}
     >
       <Animated.View style={animatedStyle}>
-        <BottomSheetContent />
+        {/* <BottomSheetContent /> */}
+        {children}
       </Animated.View>
     </BottomSheet>
   );
