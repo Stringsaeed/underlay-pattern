@@ -1,3 +1,9 @@
+
+
+
+https://github.com/user-attachments/assets/6a0d6009-6a9c-455c-b8f1-00f557c07fa5
+
+
 # Interactive Underlay Pattern with Bottom Sheet
 
 This project demonstrates an interactive UI pattern where a main content view (an "article scroll") visually transforms as a bottom sheet slides up from the bottom of the screen. When the bottom sheet is collapsed, the article takes up most of the screen. As the bottom sheet expands, the article view animates, shrinking slightly, gaining rounded corners, and adding a shadow effect, creating the appearance of sliding *underneath* the bottom sheet area.
